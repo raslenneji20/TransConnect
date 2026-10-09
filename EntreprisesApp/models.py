@@ -17,8 +17,29 @@ def email_validator(value):
     return value
 
 
+from django.utils import timezone
+
 def generate_user_id():
-    return uuid.uuid4().hex[:8].upper()
+    annee = timezone.now().strftime("%y")           
+    prefix = f"{annee}user"
+    # Find the last ID with this prefix and increment
+    last = (
+        Utilisateur.objects
+        .filter(user_id__startswith=prefix)
+        .order_by('-user_id')
+        .values_list('user_id', flat=True)
+        .first()
+    )
+    if last:
+        try:
+            n = int(last[-2:]) + 1
+        except ValueError:
+            n = 1
+    else:
+        n = 1
+    if n > 99:
+        raise ValueError("Limite annuelle de 99 utilisateurs atteinte.")
+    return f"{prefix}{n:02d}"
 
 
 matricule_fiscale_validator = RegexValidator(
@@ -78,3 +99,4 @@ class Entreprise(models.Model):
 
     def __str__(self):
         return self.raison_sociale
+    
