@@ -1,14 +1,11 @@
 from django.contrib import admin
+from EntreprisesApp.models import Entreprise, Utilisateur
 
-import EntreprisesApp
-from ExpeditionsApp.models import Expedition
-from OffresApp.models import Offre
-from VehiculesApp.models import Vehicule
-from .models import *
+class EntrepriseAdmin(admin.ModelAdmin):
+    list_display = ( 'raison_sociale','matricule_fiscale','adresse','type_entreprise' )
 
-admin.site.register(Entreprise)
-admin.site.register(Utilisateur)
-admin.site.register(Expedition)
-admin.site.register(Vehicule)
-admin.site.register(Offre)
-# Register your models here.
+class UtilisateurAdmin(admin.ModelAdmin):
+    list_display = ('user_id','email','role','telephone','created_at','updated_at')
+
+admin.site.register(Entreprise, EntrepriseAdmin)
+admin.site.register(Utilisateur, UtilisateurAdmin)

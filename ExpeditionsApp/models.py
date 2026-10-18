@@ -9,7 +9,7 @@ class Expedition(models.Model):
     ville_depart = models.CharField(max_length=100)
     ville_arrive = models.CharField(max_length=100)
     poids_kg = models.DecimalField(max_digits=10, decimal_places=2)
-    date_souhaitee = models.DateField()
+    date_souhaitee = models.DateField( )
     description = models.TextField()
     statut = models.CharField(
         max_length=20,
@@ -65,3 +65,5 @@ class Expedition(models.Model):
             self.reference = self._generate_reference()
         self.full_clean()   # optional but recommended
         super().save(*args, **kwargs)
+    def __str__(self):
+        return f"{self.reference}"
