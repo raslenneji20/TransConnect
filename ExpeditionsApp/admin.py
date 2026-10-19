@@ -33,3 +33,4 @@ class ExpeditionAdmin(admin.ModelAdmin):
             'fields': ("statut","created_at", "updated_at"),
             'classes': ('collapse',),
         }),)
+    autocomplete_fields = ['entreprise']
