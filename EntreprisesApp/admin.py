@@ -1,6 +1,10 @@
+from time import timezone
+
 from django.contrib import admin
 from EntreprisesApp.models import Entreprise, Utilisateur
-
+from ExpeditionsApp.models import Expedition
+admin.site.site_header = "TransConnect Administration"
+admin.site.site_title = "TransConnect"
 class EntrepriseAdmin(admin.ModelAdmin):
     list_display = ( 'raison_sociale','matricule_fiscale','adresse','type_entreprise' )
     list_filter = ('type_entreprise',)
