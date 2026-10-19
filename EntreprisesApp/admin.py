@@ -6,6 +6,15 @@ class EntrepriseAdmin(admin.ModelAdmin):
     list_filter = ('type_entreprise',)
     readonly_fields = ('created_at', 'updated_at')
     search_fields = ('raison_sociale', 'matricule_fiscale', 'adresse', 'type_entreprise')
+    fieldsets = (
+        ("Entreprise", {
+            'fields': ("raison_sociale", "matricule_fiscale", "adresse", "type_entreprise")
+        }),
+        ("Horodatage", {
+            'fields': ("created_at", "updated_at"),
+            'classes': ('collapse',),
+        }),
+    )
 
 
 class UtilisateurAdmin(admin.ModelAdmin):
@@ -13,6 +22,15 @@ class UtilisateurAdmin(admin.ModelAdmin):
     list_filter = ('role', 'is_active')
     readonly_fields = ('user_id','date_joined','last_login', 'created_at', 'updated_at')
     search_fields = ('user_id', 'email', 'username', 'role')
+    fieldsets = (
+        ("Utilisateur", {
+            'fields': ("user_id", "username", "email", "role", "telephone")
+        }),
+        ("Horodatage", {
+            'fields': ("date_joined","last_login","created_at", "updated_at"),
+            'classes': ('collapse',),
+        }),
+    )
 
 admin.site.register(Entreprise, EntrepriseAdmin)
 admin.site.register(Utilisateur, UtilisateurAdmin)
