@@ -1,7 +1,3 @@
-{% extends "base.html" %}
-
-{% block title %}Expéditions disponibles{% endblock %}
-
 {% block content %}
 <h2>Expéditions publiées</h2>
 <ul>
@@ -13,6 +9,7 @@
 — {{ expedition.ville_depart }} → {{ expedition.ville_arrivee }}
 ({{ expedition.poids_kg|floatformat:0 }} kg,
 souhaitée le {{ expedition.date_souhaitee|date:"d/m/Y" }})
+<a href="{% url 'expeditions:delete' expedition.reference %}">Supprimer</a>
 <br>
 <small>{{ expedition.description|default:"Aucune description fournie."|truncatewords:15 }}</small>
 </li>

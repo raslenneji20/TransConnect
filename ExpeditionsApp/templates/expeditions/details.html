@@ -1,0 +1,46 @@
+{% extends "base.html" %}
+
+{% block title %}Expédition {{ expedition.reference }}{% endblock %}
+
+{% block content %}
+<h2>Expédition {{ expedition.reference }}</h2>
+
+<p>
+    <a href="{% url 'expeditions:liste' %}">&larr; Retour à la liste</a>
+</p>
+
+<h3>Informations</h3>
+<ul>
+    <li><strong>Référence :</strong> {{ expedition.reference }}</li>
+    <li><strong>Statut :</strong> {{ expedition.get_statut_display }}</li>
+    <li><strong>Entreprise :</strong> {{ expedition.entreprise.nom }}</li>
+    <li><strong>Créée le :</strong> {{ expedition.created_at|date:"d/m/Y H:i" }}</li>
+</ul>
+
+<h3>Offres ({{ offres|length }})</h3>
+
+{% if offres %}
+<table border="1" cellpadding="6" cellspacing="0">
+    <thead>
+        <tr>
+            <th>Transporteur</th>
+            <th>Véhicule</th>
+            <th>Date de proposition</th>
+            <th>Prix</th>
+        </tr>
+    </thead>
+    <tbody>
+        {% for offre in offres %}
+        <tr>
+            <td>{{ offre.transporteur }}</td>
+            <td>{{ offre.vehicule }}</td>
+            <td>{{ offre.date_proposition|date:"d/m/Y H:i" }}</td>
+            <td>{{ offre.prix }}</td>
+        </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% else %}
+<p>Aucune offre pour le moment.</p>
+{% endif %}
+{% endblock %}
