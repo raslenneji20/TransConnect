@@ -1,5 +1,6 @@
 from django.contrib import admin
 from VehiculesApp.models import Vehicule
+
 class VehiculeAdmin(admin.ModelAdmin):
     list_display = ('immatriculation', 'capacite_kg', 'type_vehicule','disponible','entreprise','created_at','updated_at')
     list_filter = ('type_vehicule', 'disponible', 'entreprise')

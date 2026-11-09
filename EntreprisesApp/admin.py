@@ -1,10 +1,14 @@
 from django.contrib import admin
 from EntreprisesApp.models import Entreprise, Utilisateur
+from VehiculesApp.models import Vehicule
 
 admin.site.site_header = "TransConnect Administration"
 admin.site.site_title = "TransConnect"
 
-
+class VehiculeInline(admin.TabularInline):
+ model = Vehicule
+ extra = 0
+ fields = ('immatriculation', 'type_vehicule', 'capacite_kg', 'disponible')
 class EntrepriseAdmin(admin.ModelAdmin):
     list_display = ('raison_sociale', 'matricule_fiscale', 'adresse', 'type_entreprise')
     list_filter = ('type_entreprise',)
@@ -19,6 +23,7 @@ class EntrepriseAdmin(admin.ModelAdmin):
             'classes': ('collapse',),
         }),
     )
+    inlines = [VehiculeInline]
 
 
 class UtilisateurAdmin(admin.ModelAdmin):

@@ -1,0 +1,21 @@
+{% extends "base.html" %}
+
+{% block title %}Entreprises disponibles{% endblock %}
+
+{% block content %}
+<h2>Entreprises</h2>
+<ul>
+{% for entreprise in entreprises %}
+<li>
+    <a href="{% url 'entreprises:detail_entreprise' entreprise.pk %}">
+        {{ entreprise.reference }}
+    </a>
+    — {{ entreprise.matricule_fiscale }} ({{ entreprise.raison_sociale }})
+
+</li>
+
+{% empty %}
+<li>Aucune entreprise disponible pour le moment.</li>
+{% endfor %}
+</ul>
+{% endblock %}
