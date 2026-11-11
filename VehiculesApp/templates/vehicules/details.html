@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+  <p>Immatriculation : {{ vehicule.immatriculation }}</p>
+  <p>capacite : {{ vehicule.capacite_kg }} kg</p>
+  <p>disponible : {{ vehicule.disponible }}</p>
+  <p>type_vehicule : {{ vehicule.type_vehicule }}</p>
+  <a href="{% url 'vehicules:liste' %}">Retour à la liste</a>
+</body>
+</html>

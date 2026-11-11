@@ -1,6 +1,4 @@
-{% extends "base.html" %}
 
-{% block title %}Entreprises disponibles{% endblock %}
 
 {% block content %}
 <h2>Entreprises</h2>
@@ -11,7 +9,8 @@
         {{ entreprise.reference }}
     </a>
     — {{ entreprise.matricule_fiscale }} ({{ entreprise.raison_sociale }})
-
+    <a href="{% url 'entreprises:delete' entreprise.pk %}">Supprimer</a>
+    <br>
 </li>
 
 {% empty %}

@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Liste des véhicules</h1>
+    <ul>
+        {% for vehicule in object_list %}
+        <li>
+            <a href="{% url 'vehicules:detail' vehicule.pk %}">
+                {{ vehicule.marque }} {{ vehicule.modele }} ({{ vehicule.immatriculation }})
+            </a>
+            <a href="{% url 'vehicules:delete' vehicule.pk %}">Supprimer</a>
+        </li>
+        {% empty %}
+        <li>Aucun véhicule disponible.</li>
+        {% endfor %}
+    </ul>
+</body>
+</html>

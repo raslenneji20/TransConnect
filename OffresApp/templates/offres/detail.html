@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>détail de l'offre</h1>
+    <p><strong>Titre:</strong> {{ offre.titre }}</p>
+    <p><strong>Description:</strong> {{ offre.description }}</p>
+    <p><strong>Prix:</strong> {{ offre.prix }}</p>
+    <a href="{% url 'offres:liste' %}">Retour à la liste</a>
+</body>
+</html>

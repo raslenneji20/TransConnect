@@ -1,0 +1,23 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+</head>
+<body>
+    <h1>Liste des offres</h1>
+    {% for offre in object_list %}
+        <div>
+            <p>{{ offre.statut }}</p>
+            <p>{{ offre.delai_jours }}</p>
+            <p>Prix: {{ offre.prix }}</p>
+            <a href="{% url 'offres:detail' offre.pk %}">Voir les détails</a>
+            <a href="{% url 'offres:delete' offre.pk %}">Supprimer</a>
+            <h1>-----------------------------</h1>
+        </div>
+    {% empty %}
+        <p>Aucune offre disponible.</p>
+    {% endfor %}
+</body>
+</html>
