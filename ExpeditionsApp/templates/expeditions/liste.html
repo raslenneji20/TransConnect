@@ -1,20 +1,27 @@
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "shipments_title" %} | TransConnect{% endblock %}
 {% block content %}
-<h2>Expéditions publiées</h2>
-<ul>
-{% for expedition in expeditions %}
-<li>
-<a href="{% url 'expeditions:detail' expedition.reference %}">
-{{ expedition.reference }}
-</a>
-— {{ expedition.ville_depart }} → {{ expedition.ville_arrivee }}
-({{ expedition.poids_kg|floatformat:0 }} kg,
-souhaitée le {{ expedition.date_souhaitee|date:"d/m/Y" }})
-<a href="{% url 'expeditions:delete' expedition.reference %}">Supprimer</a>
-<br>
-<small>{{ expedition.description|default:"Aucune description fournie."|truncatewords:15 }}</small>
-</li>
-{% empty %}
-<li>Aucune expédition disponible pour le moment.</li>
-{% endfor %}
-</ul>
+<section class="page-wrap">
+    <header class="page-heading">
+        <div><span class="eyebrow">{% t "eyebrow_workspace" %}</span><h1>{% t "shipments_title" %}</h1><p>{% t "shipments_intro" %}</p></div>
+        <div class="page-actions"><a class="btn primary" href="{% url 'expeditions:create' %}">+ {% t "create_shipment" %}</a></div>
+    </header>
+    <ul class="items-list">
+        {% for expedition in expeditions %}
+        <li class="item-card">
+            <a class="item-link" href="{% url 'expeditions:detail' expedition.reference %}">{{ expedition.reference }}</a>
+            <p><strong>{% t "origin" %} → {% t "destination" %}:</strong> {{ expedition.ville_depart }} → {{ expedition.ville_arrive }}</p>
+            <p><strong>{% t "weight" %}:</strong> {{ expedition.poids_kg|floatformat:0 }} kg</p>
+            <small>{% t "requested_for" %} {{ expedition.date_souhaitee|date:"d/m/Y" }} · {% if expedition.description %}{{ expedition.description|truncatewords:15 }}{% else %}{% t "no_description" %}{% endif %}</small>
+            <div class="actions">
+                <a class="btn details" href="{% url 'expeditions:detail' expedition.reference %}">{% t "view_details" %}</a>
+                <a class="btn delete" href="{% url 'expeditions:delete' expedition.reference %}">{% t "delete" %}</a>
+            </div>
+        </li>
+        {% empty %}
+        <li class="empty">{% t "empty_shipments" %}</li>
+        {% endfor %}
+    </ul>
+</section>
 {% endblock %}

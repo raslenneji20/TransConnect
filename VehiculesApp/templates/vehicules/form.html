@@ -1,15 +1,18 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Créer l'entreprise</button>
-    </form>
-</body>
-</html>
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "create_vehicle_title" %} | TransConnect{% endblock %}
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading"><div><span class="eyebrow">{% t "eyebrow_create" %}</span><h1>{% t "create_vehicle_title" %}</h1></div></header>
+    <div class="content-panel form-panel">
+        <form method="post">
+            {% csrf_token %}
+            {% for field in form %}
+                <p><label for="{{ field.id_for_label }}">{% field_label field.name field.label %}</label>{% render_field field %}{{ field.errors }}{% if field.help_text %}<small class="helptext">{{ field.help_text }}</small>{% endif %}</p>
+            {% endfor %}
+            {{ form.non_field_errors }}
+            <div class="page-actions"><button class="btn primary" type="submit">{% t "save" %}</button><a class="btn secondary" href="{% url 'vehicules:liste' %}">{% t "cancel" %}</a></div>
+        </form>
+    </div>
+</section>
+{% endblock %}

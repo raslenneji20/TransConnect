@@ -1,0 +1,23 @@
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "company_detail_title" %} | TransConnect{% endblock %}
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div><span class="eyebrow">{% t "eyebrow_details" %}</span><h1>{{ entreprise.raison_sociale }}</h1></div>
+        <div class="page-actions">
+            <a class="btn secondary" href="{% url 'entreprises:liste' %}">{% t "back_to_list" %}</a>
+            <a class="btn delete" href="{% url 'entreprises:delete' entreprise.pk %}">{% t "delete" %}</a>
+        </div>
+    </header>
+    <div class="content-panel">
+        <h2 class="section-title">{% t "company_details" %}</h2>
+        <dl class="detail-grid">
+            <div class="detail-cell"><dt>{% t "field_raison_sociale" %}</dt><dd>{{ entreprise.raison_sociale }}</dd></div>
+            <div class="detail-cell"><dt>{% t "field_matricule_fiscale" %}</dt><dd>{{ entreprise.matricule_fiscale }}</dd></div>
+            <div class="detail-cell"><dt>{% t "field_type_entreprise" %}</dt><dd>{% display_choice entreprise.get_type_entreprise_display %}</dd></div>
+            <div class="detail-cell"><dt>{% t "field_adresse" %}</dt><dd>{{ entreprise.adresse }}</dd></div>
+        </dl>
+    </div>
+</section>
+{% endblock %}

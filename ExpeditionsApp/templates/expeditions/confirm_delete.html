@@ -1,11 +1,12 @@
 {% extends "base.html" %}
-{% block title %}Supprimer {{ expedition.reference }}{% endblock %}
+{% load ui_translation %}
+{% block title %}{% t "confirm_delete" %} | TransConnect{% endblock %}
 {% block content %}
-<h2>Confirmer la suppression</h2>
-<p>Supprimer définitivement l'expédition <strong>{{ expedition.reference }}</strong> ?</p>
-<form method="post">
-  {% csrf_token %}
-  <button type="submit">Oui, supprimer</button>
-  <a href="{% url 'expeditions:liste' %}">Annuler</a>
-</form>
+<section class="page-wrap">
+    <header class="page-heading"><div><span class="eyebrow">{% t "eyebrow_confirm" %}</span><h1>{% t "confirm_delete" %}</h1></div></header>
+    <div class="content-panel confirm-panel">
+        <p>{% t "confirm_shipment_delete" %} <strong>{{ expedition.reference }}</strong> ?</p>
+        <form method="post">{% csrf_token %}<div class="page-actions"><button class="btn delete" type="submit">{% t "yes_delete" %}</button><a class="btn secondary" href="{% url 'expeditions:liste' %}">{% t "cancel" %}</a></div></form>
+    </div>
+</section>
 {% endblock %}

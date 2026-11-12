@@ -1,23 +1,27 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Liste des véhicules</h1>
-    <ul>
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "vehicles_title" %} | TransConnect{% endblock %}
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div><span class="eyebrow">{% t "eyebrow_directory" %}</span><h1>{% t "vehicles_title" %}</h1><p>{% t "vehicles_intro" %}</p></div>
+        <div class="page-actions"><a class="btn primary" href="{% url 'vehicules:create' %}">+ {% t "create_vehicle" %}</a></div>
+    </header>
+    <ul class="items-list">
         {% for vehicule in object_list %}
-        <li>
-            <a href="{% url 'vehicules:detail' vehicule.pk %}">
-                {{ vehicule.marque }} {{ vehicule.modele }} ({{ vehicule.immatriculation }})
-            </a>
-            <a href="{% url 'vehicules:delete' vehicule.pk %}">Supprimer</a>
+        <li class="item-card">
+            <a class="item-link" href="{% url 'vehicules:detail' vehicule.pk %}">{{ vehicule.immatriculation }}</a>
+            <p><strong>{% t "vehicle_type" %}:</strong> {% display_choice vehicule.get_type_vehicule_display %}</p>
+            <p><strong>{% t "capacity" %}:</strong> {{ vehicule.capacite_kg }} kg</p>
+            <p><strong>{% t "availability" %}:</strong> {% if vehicule.disponible %}{% t "available" %}{% else %}{% t "unavailable" %}{% endif %}</p>
+            <div class="actions">
+                <a class="btn details" href="{% url 'vehicules:detail' vehicule.pk %}">{% t "view_details" %}</a>
+                <a class="btn delete" href="{% url 'vehicules:delete' vehicule.pk %}">{% t "delete" %}</a>
+            </div>
         </li>
         {% empty %}
-        <li>Aucun véhicule disponible.</li>
+        <li class="empty">{% t "empty_vehicles" %}</li>
         {% endfor %}
     </ul>
-</body>
-</html>
+</section>
+{% endblock %}

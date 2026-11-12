@@ -1,20 +1,33 @@
 
-
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "companies_title" %} | TransConnect{% endblock %}
 {% block content %}
-<h2>Entreprises</h2>
-<ul>
-{% for entreprise in entreprises %}
-<li>
-    <a href="{% url 'entreprises:detail_entreprise' entreprise.pk %}">
-        {{ entreprise.reference }}
-    </a>
-    — {{ entreprise.matricule_fiscale }} ({{ entreprise.raison_sociale }})
-    <a href="{% url 'entreprises:delete' entreprise.pk %}">Supprimer</a>
-    <br>
-</li>
-
-{% empty %}
-<li>Aucune entreprise disponible pour le moment.</li>
-{% endfor %}
-</ul>
+<section class="page-wrap">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">{% t "eyebrow_directory" %}</span>
+            <h1>{% t "companies_title" %}</h1>
+            <p>{% t "companies_intro" %}</p>
+        </div>
+        <div class="page-actions">
+            <a class="btn primary" href="{% url 'entreprises:create' %}">+ {% t "create_company" %}</a>
+        </div>
+    </header>
+    <ul class="items-list">
+        {% for entreprise in entreprises %}
+        <li class="item-card">
+            <a class="item-link" href="{% url 'entreprises:detail_entreprise' entreprise.pk %}">{{ entreprise.raison_sociale }}</a>
+            <p><strong>{% t "field_matricule_fiscale" %}:</strong> {{ entreprise.matricule_fiscale }}</p>
+            <p><strong>{% t "field_type_entreprise" %}:</strong> {{ entreprise.get_type_entreprise_display }}</p>
+            <div class="actions">
+                <a class="btn details" href="{% url 'entreprises:detail_entreprise' entreprise.pk %}">{% t "view_details" %}</a>
+                <a class="btn delete" href="{% url 'entreprises:delete' entreprise.pk %}">{% t "delete" %}</a>
+            </div>
+        </li>
+        {% empty %}
+        <li class="empty">{% t "empty_companies" %}</li>
+        {% endfor %}
+    </ul>
+</section>
 {% endblock %}

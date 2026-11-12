@@ -1,15 +1,23 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>détail de l'offre</h1>
-    <p><strong>Titre:</strong> {{ offre.titre }}</p>
-    <p><strong>Description:</strong> {{ offre.description }}</p>
-    <p><strong>Prix:</strong> {{ offre.prix }}</p>
-    <a href="{% url 'offres:liste' %}">Retour à la liste</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "offer_detail_title" %} | TransConnect{% endblock %}
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div><span class="eyebrow">{% t "eyebrow_details" %}</span><h1>{% t "offer_detail_title" %} #{{ offre.pk }}</h1></div>
+        <div class="page-actions"><a class="btn secondary" href="{% url 'offres:liste' %}">{% t "back_to_list" %}</a></div>
+    </header>
+    <div class="content-panel">
+        <h2 class="section-title">{% t "offer_details" %}</h2>
+        <dl class="detail-grid">
+            <div class="detail-cell"><dt>{% t "status" %}</dt><dd>{% display_choice offre.get_statut_display %}</dd></div>
+            <div class="detail-cell"><dt>{% t "price" %}</dt><dd>{{ offre.prix }} DT</dd></div>
+            <div class="detail-cell"><dt>{% t "deadline" %}</dt><dd>{{ offre.delai_jours }} {% t "days" %}</dd></div>
+            <div class="detail-cell"><dt>{% t "proposed_on" %}</dt><dd>{{ offre.date_proposition|date:"d/m/Y" }}</dd></div>
+            <div class="detail-cell"><dt>{% t "company" %}</dt><dd>{{ offre.entreprise }}</dd></div>
+            <div class="detail-cell"><dt>{% t "vehicle" %}</dt><dd>{{ offre.vehicule }}</dd></div>
+            <div class="detail-cell"><dt>{% t "shipment_details" %}</dt><dd>{{ offre.expedition }}</dd></div>
+        </dl>
+    </div>
+</section>
+{% endblock %}

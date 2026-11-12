@@ -1,15 +1,21 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-  <p>Immatriculation : {{ vehicule.immatriculation }}</p>
-  <p>capacite : {{ vehicule.capacite_kg }} kg</p>
-  <p>disponible : {{ vehicule.disponible }}</p>
-  <p>type_vehicule : {{ vehicule.type_vehicule }}</p>
-  <a href="{% url 'vehicules:liste' %}">Retour à la liste</a>
-</body>
-</html>
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "vehicle_detail_title" %} | TransConnect{% endblock %}
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div><span class="eyebrow">{% t "eyebrow_details" %}</span><h1>{{ vehicule.immatriculation }}</h1></div>
+        <div class="page-actions"><a class="btn secondary" href="{% url 'vehicules:liste' %}">{% t "back_to_list" %}</a><a class="btn delete" href="{% url 'vehicules:delete' vehicule.pk %}">{% t "delete" %}</a></div>
+    </header>
+    <div class="content-panel">
+        <h2 class="section-title">{% t "vehicle_details" %}</h2>
+        <dl class="detail-grid">
+            <div class="detail-cell"><dt>{% t "registration" %}</dt><dd>{{ vehicule.immatriculation }}</dd></div>
+            <div class="detail-cell"><dt>{% t "capacity" %}</dt><dd>{{ vehicule.capacite_kg }} kg</dd></div>
+            <div class="detail-cell"><dt>{% t "availability" %}</dt><dd>{% if vehicule.disponible %}{% t "available" %}{% else %}{% t "unavailable" %}{% endif %}</dd></div>
+            <div class="detail-cell"><dt>{% t "vehicle_type" %}</dt><dd>{% display_choice vehicule.get_type_vehicule_display %}</dd></div>
+            <div class="detail-cell"><dt>{% t "company" %}</dt><dd>{{ vehicule.entreprise }}</dd></div>
+        </dl>
+    </div>
+</section>
+{% endblock %}

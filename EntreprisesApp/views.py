@@ -14,14 +14,17 @@ def liste_entreprises(request):
     )
     return render(request, 'entreprises/liste.html', {'entreprises': entreprises})
 
-def detail_entreprise(request, matricule_fiscale):
-    entreprise = get_object_or_404(Entreprise, matricule_fiscale=matricule_fiscale)
+def detail_entreprise(request, pk):
+    entreprise = get_object_or_404(Entreprise, pk=pk)
     return render(request, 'entreprises/detail.html', {'entreprise': entreprise})
 class EntrepriseCreateView(CreateView):
-    model=Entreprise
-    template_name='entreprises/form.html'
-    form_class=EntrepriseForm
+    model = Entreprise
+    template_name = 'entreprises/form.html'
+    form_class = EntrepriseForm
+    success_url = reverse_lazy('entreprises:liste')
+
+
 class EntrepriseDeleteView(DeleteView):
-    model=Entreprise
-    template_name='entreprises/confirm_delete.html'
+    model = Entreprise
+    template_name = 'entreprises/confirm_delete.html'
     success_url = reverse_lazy('entreprises:liste')

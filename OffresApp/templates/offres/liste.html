@@ -1,23 +1,28 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Document</title>
-</head>
-<body>
-    <h1>Liste des offres</h1>
-    {% for offre in object_list %}
-        <div>
-            <p>{{ offre.statut }}</p>
-            <p>{{ offre.delai_jours }}</p>
-            <p>Prix: {{ offre.prix }}</p>
-            <a href="{% url 'offres:detail' offre.pk %}">Voir les détails</a>
-            <a href="{% url 'offres:delete' offre.pk %}">Supprimer</a>
-            <h1>-----------------------------</h1>
-        </div>
-    {% empty %}
-        <p>Aucune offre disponible.</p>
-    {% endfor %}
-</body>
-</html>
+
+{% extends "base.html" %}
+{% load ui_translation %}
+{% block title %}{% t "offers_title" %} | TransConnect{% endblock %}
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div><span class="eyebrow">{% t "eyebrow_workspace" %}</span><h1>{% t "offers_title" %}</h1><p>{% t "offers_intro" %}</p></div>
+        <div class="page-actions"><a class="btn primary" href="{% url 'offres:create' %}">+ {% t "create_offer" %}</a></div>
+    </header>
+    <ul class="items-list">
+        {% for offre in object_list %}
+        <li class="item-card">
+            <a class="item-link" href="{% url 'offres:detail' offre.pk %}">{% t "offer_label" %} #{{ offre.pk }}</a>
+            <p><strong>{% t "status" %}:</strong> {% display_choice offre.get_statut_display %}</p>
+            <p><strong>{% t "deadline" %}:</strong> {{ offre.delai_jours }} {% t "days" %}</p>
+            <p><strong>{% t "price" %}:</strong> {{ offre.prix }} DT</p>
+            <div class="actions">
+                <a href="{% url 'offres:detail' offre.pk %}" class="btn details">{% t "view_details" %}</a>
+                <a href="{% url 'offres:delete' offre.pk %}" class="btn delete">{% t "delete" %}</a>
+            </div>
+        </li>
+        {% empty %}
+        <li class="empty">{% t "empty_offers" %}</li>
+        {% endfor %}
+    </ul>
+</section>
+{% endblock %}
