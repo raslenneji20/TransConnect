@@ -22,10 +22,28 @@
         {% if offres %}
         <div class="data-table-wrap">
             <table class="data-table">
-                <thead><tr><th>{% t "carrier" %}</th><th>{% t "vehicle" %}</th><th>{% t "proposed_on" %}</th><th>{% t "price" %}</th></tr></thead>
+                <thead><tr><th>{% t "carrier" %}</th><th>{% t "vehicle" %}</th><th>{% t "proposed_on" %}</th><th>{% t "price" %}</th>{% if can_respond_to_offers %}<th>Réponse</th>{% endif %}</tr></thead>
                 <tbody>
                     {% for offre in offres %}
-                    <tr><td>{{ offre.entreprise }}</td><td>{{ offre.vehicule }}</td><td>{{ offre.date_proposition|date:"d/m/Y" }}</td><td>{{ offre.prix }}</td></tr>
+                    <tr>
+                        <td>{{ offre.entreprise }}</td>
+                        <td>{{ offre.vehicule }}</td>
+                        <td>{{ offre.date_proposition|date:"d/m/Y" }}</td>
+                        <td>{{ offre.prix }}</td>
+                        {% if can_respond_to_offers %}
+                            <td>
+                                {% if offre.statut == 'proposee' and expedition.statut == 'publiee' %}
+                                    <form method="post" action="{% url 'offres:respond' offre.pk %}" class="inline-response-form">
+                                        {% csrf_token %}
+                                        <button class="btn primary" type="submit" name="action" value="acceptee">Accepter</button>
+                                        <button class="btn delete" type="submit" name="action" value="refusee">Refuser</button>
+                                    </form>
+                                {% else %}
+                                    {% display_choice offre.get_statut_display %}
+                                {% endif %}
+                            </td>
+                        {% endif %}
+                    </tr>
                     {% endfor %}
                 </tbody>
             </table>

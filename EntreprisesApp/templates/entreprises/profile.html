@@ -1,0 +1,33 @@
+{% extends "base.html" %}
+
+{% block title %}Mon profil | TransConnect{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">Compte</span>
+            <h1>Mon profil</h1>
+            <p>Modifiez vos coordonnées. Votre rôle ne peut pas être changé depuis cette page.</p>
+        </div>
+        <a class="btn secondary" href="{% url 'home' %}">Retour à l’accueil</a>
+    </header>
+
+    <div class="content-panel form-panel">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="actions">
+                <button class="btn primary" type="submit">Enregistrer les modifications</button>
+                <a class="btn secondary" href="{% url 'home' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+
+    <section class="content-panel confirm-panel account-deactivation">
+        <h2 class="section-title">Supprimer mon compte</h2>
+        <p>Votre accès sera désactivé. L’entreprise, les expéditions, véhicules et offres associés seront conservés.</p>
+        <a class="btn delete" href="{% url 'entreprises:deactivate_account' %}">Supprimer mon compte</a>
+    </section>
+</section>
+{% endblock %}

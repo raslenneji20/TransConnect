@@ -1,0 +1,29 @@
+{% extends "base.html" %}
+{% load ui_translation %}
+
+{% block title %}Créer un compte | TransConnect{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">Inscription</span>
+            <h1>Rejoindre TransConnect</h1>
+            <p>Créez votre compte et l’espace de votre entreprise.</p>
+        </div>
+        <a class="btn secondary" href="{% url 'entreprises:login' %}">J’ai déjà un compte</a>
+    </header>
+
+    <div class="content-panel form-panel">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <p class="helptext">Les administrateurs sont créés séparément et ne peuvent pas s’inscrire ici.</p>
+            <div class="actions">
+                <button class="btn primary" type="submit">Créer mon compte</button>
+                <a class="btn secondary" href="{% url 'entreprises:login' %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

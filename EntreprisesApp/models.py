@@ -1,4 +1,5 @@
 import uuid
+import re
 
 from django.contrib.auth.models import AbstractUser
 from django.core.exceptions import ValidationError
@@ -12,9 +13,15 @@ from django.utils import timezone
 # ---------------------------------------------------------------------------
 
 def email_validator(value):
-    if not value.endswith('@gmail.com'):
+    if not re.match(r'^[^@\s]+@gmail\.com$', value, flags=re.IGNORECASE):
         raise ValidationError("L'adresse e-mail doit se terminer par '@gmail.com'.")
     return value
+
+
+telephone_validator = RegexValidator(
+    regex=r'^\d+$',
+    message='Le numéro de téléphone ne doit contenir que des chiffres.',
+)
 
 
 from django.utils import timezone
@@ -53,6 +60,11 @@ matricule_fiscale_validator = RegexValidator(
 # ---------------------------------------------------------------------------
 
 class Utilisateur(AbstractUser):
+    class Role(models.TextChoices):
+        ADMIN = 'admin', 'Administrateur'
+        GERANT = 'gerant', 'Gérant'
+        CHARGEUR = 'chargeur', 'Chargeur'
+
     user_id = models.CharField(
         max_length=8,
         primary_key=True,
@@ -60,8 +72,17 @@ class Utilisateur(AbstractUser):
         editable=False,
     )
     email = models.EmailField(unique=True, validators=[email_validator])
-    telephone = models.CharField(max_length=15, null=True, blank=True)
-    role = models.CharField(max_length=20)
+    telephone = models.CharField(
+        max_length=15,
+        null=True,
+        blank=True,
+        validators=[telephone_validator],
+    )
+    role = models.CharField(
+        max_length=20,
+        choices=Role.choices,
+        default=Role.CHARGEUR,
+    )
     created_at = models.DateTimeField(auto_now_add=True)
     updated_at = models.DateTimeField(auto_now=True)
 
@@ -70,8 +91,22 @@ class Utilisateur(AbstractUser):
     def __str__(self):
         return f"{self.username} ({self.user_id})"
 
+    @property
+    def is_platform_admin(self):
+        return self.is_superuser or self.role == self.Role.ADMIN
+
+    def save(self, *args, **kwargs):
+        if self._state.adding and not self.user_id:
+            self.user_id = generate_user_id()
+        if self.role == self.Role.ADMIN:
+            self.is_staff = True
+        elif not self.is_superuser:
+            self.is_staff = False
+        super().save(*args, **kwargs)
+
 
 class Entreprise(models.Model):
+    id = models.BigAutoField(primary_key=True)
     raison_sociale = models.CharField(max_length=200)
     matricule_fiscale = models.CharField(
         max_length=17,

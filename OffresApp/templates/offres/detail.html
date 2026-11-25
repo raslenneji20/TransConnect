@@ -18,6 +18,15 @@
             <div class="detail-cell"><dt>{% t "vehicle" %}</dt><dd>{{ offre.vehicule }}</dd></div>
             <div class="detail-cell"><dt>{% t "shipment_details" %}</dt><dd>{{ offre.expedition }}</dd></div>
         </dl>
+        {% if request.user.is_platform_admin or request.user.role == 'chargeur' %}
+            {% if offre.statut == 'proposee' and offre.expedition.statut == 'publiee' %}
+                <form method="post" action="{% url 'offres:respond' offre.pk %}" class="inline-response-form">
+                    {% csrf_token %}
+                    <button class="btn primary" type="submit" name="action" value="acceptee">Accepter l’offre</button>
+                    <button class="btn delete" type="submit" name="action" value="refusee">Refuser l’offre</button>
+                </form>
+            {% endif %}
+        {% endif %}
     </div>
 </section>
 {% endblock %}

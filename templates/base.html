@@ -12,26 +12,28 @@
 <body>
     <div class="ambient ambient-one" aria-hidden="true"></div>
     <div class="ambient ambient-two" aria-hidden="true"></div>
+    <div class="bubble-field" aria-hidden="true"></div>
     <header class="site-header">
         <nav class="site-nav" aria-label="{% t 'nav_aria' %}">
-            <a class="brand" href="{% url 'expeditions:liste' %}">
-                <span class="brand-mark" aria-hidden="true">T</span>
-                <span class="brand-copy">
-                    <strong>TransConnect</strong>
-                    <small>{% t "brand_tagline" %}</small>
-                </span>
+            <a class="brand" href="{% url 'home' %}">
+                <img class="brand-logo" src="{% static 'logo.png' %}" alt="TransConnect">
             </a>
             <button class="nav-toggle" type="button" aria-expanded="false" aria-controls="primary-navigation">
                 <span class="sr-only">{% t "open_navigation" %}</span>
                 <span></span><span></span><span></span>
             </button>
             <div class="nav-content" id="primary-navigation">
-                <div class="nav-links">
-                    <a href="{% url 'expeditions:liste' %}">{% t "nav_expeditions" %}</a>
-                    <a href="{% url 'entreprises:liste' %}">{% t "nav_companies" %}</a>
-                    <a href="{% url 'vehicules:liste' %}">{% t "nav_vehicles" %}</a>
-                    <a href="{% url 'offres:liste' %}">{% t "nav_offers" %}</a>
-                </div>
+                {% if request.user.is_authenticated %}
+                    <div class="nav-links">
+                        <a href="{% url 'expeditions:liste' %}">{% t "nav_expeditions" %}</a>
+                        {% if request.user.is_platform_admin or request.user.role == 'gerant' %}
+                            <a href="{% url 'entreprises:liste' %}">{% t "nav_companies" %}</a>
+                            <a href="{% url 'vehicules:liste' %}">{% t "nav_vehicles" %}</a>
+                        {% endif %}
+                        <a href="{% url 'offres:liste' %}">{% t "nav_offers" %}</a>
+                        <a href="{% url 'entreprises:profile' %}">Mon profil</a>
+                    </div>
+                {% endif %}
                 <form class="language-switch" action="{% url 'set_language' %}" method="post">
                     {% csrf_token %}
                     <input type="hidden" name="next" value="{{ request.get_full_path }}">
@@ -41,10 +43,33 @@
                         <option value="en" {% if request.LANGUAGE_CODE == 'en' %}selected{% endif %}>EN</option>
                     </select>
                 </form>
+                {% if request.user.is_authenticated %}
+                    <form action="{% url 'entreprises:logout' %}" method="post" class="logout-form">
+                        {% csrf_token %}
+                        <button type="submit" class="nav-auth-button nav-logout-button" title="Se déconnecter">
+                            <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8" aria-hidden="true">
+                                <path d="M10 5H5v14h5"></path>
+                                <path d="m14 8 4 4-4 4"></path>
+                                <path d="M18 12H9"></path>
+                            </svg>
+                            <span>D&eacute;connexion</span>
+                        </button>
+                    </form>
+                {% else %}
+                    <a class="nav-auth-button" href="{% url 'entreprises:login' %}">Connexion</a>
+                    <a class="nav-auth-button" href="{% url 'entreprises:register' %}">Créer un compte</a>
+                {% endif %}
             </div>
         </nav>
     </header>
     <main class="site-main">
+        {% if messages %}
+            <div class="page-wrap site-messages" role="status">
+                {% for message in messages %}
+                    <p class="site-message">{{ message }}</p>
+                {% endfor %}
+            </div>
+        {% endif %}
         {% block content %}{% endblock %}
     </main>
     <footer class="site-footer">{% t "footer_note" %}</footer>

@@ -1,0 +1,373 @@
+{% extends "base.html" %}
+{% load static ui_translation %}
+
+{% block title %}Accueil | TransConnect{% endblock %}
+
+{% block content %}
+<style>
+    .home-wrap {
+        width: min(1220px, calc(100% - 40px));
+        margin: 0 auto;
+        padding: clamp(44px, 7vw, 82px) 0 74px;
+    }
+
+    .home-hero {
+        position: relative;
+        display: grid;
+        min-height: 390px;
+        overflow: hidden;
+        grid-template-columns: minmax(0, 1.25fr) minmax(260px, .75fr);
+        border: 1px solid rgba(205, 218, 238, .78);
+        border-radius: 28px;
+        background:
+            radial-gradient(circle at 82% 20%, rgba(91, 158, 255, .24), transparent 220px),
+            linear-gradient(145deg, #0b203f 0%, #12366d 58%, #1d5ab2 100%);
+        box-shadow: 0 28px 70px rgba(24, 58, 112, .18);
+    }
+
+    .home-hero-copy {
+        position: relative;
+        z-index: 2;
+        align-self: center;
+        max-width: 680px;
+        padding: clamp(38px, 6vw, 68px);
+    }
+
+    .home-kicker {
+        display: inline-flex;
+        align-items: center;
+        margin-bottom: 18px;
+        gap: 9px;
+        color: #73dec9;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1.7px;
+        text-transform: uppercase;
+    }
+
+    .home-kicker::before {
+        width: 24px;
+        height: 2px;
+        border-radius: 2px;
+        background: #73dec9;
+        content: "";
+    }
+
+    .home-hero h1 {
+        max-width: 620px;
+        margin: 0;
+        color: white;
+        font-size: clamp(42px, 6vw, 68px);
+        font-weight: 840;
+        letter-spacing: -3.5px;
+        line-height: 1;
+    }
+
+    .home-hero h1 span {
+        color: #83aeff;
+    }
+
+    .home-hero-copy > p {
+        max-width: 560px;
+        margin: 22px 0 28px;
+        color: #b9c9df;
+        font-size: 16px;
+        line-height: 1.72;
+    }
+
+    .home-actions {
+        display: flex;
+        flex-wrap: wrap;
+        gap: 12px;
+    }
+
+    .home-actions .btn {
+        height: 48px;
+        box-sizing: border-box;
+        padding: 14px 18px;
+        text-decoration: none;
+    }
+
+    .home-actions .primary {
+        background: white;
+        color: #1b4f9d;
+        box-shadow: 0 12px 28px rgba(4, 20, 48, .18);
+    }
+
+    .home-actions .ghost {
+        border: 1px solid rgba(255, 255, 255, .16);
+        color: white;
+        background: rgba(255, 255, 255, .08);
+        backdrop-filter: blur(10px);
+    }
+
+    .home-visual {
+        position: relative;
+        min-height: 390px;
+    }
+
+    .route-line {
+        position: absolute;
+        top: 50%;
+        left: 2%;
+        width: 88%;
+        height: 180px;
+        border: 2px dashed rgba(162, 199, 255, .26);
+        border-left: 0;
+        border-bottom: 0;
+        border-radius: 0 100% 0 0;
+        transform: rotate(-8deg);
+    }
+
+    .route-node {
+        position: absolute;
+        display: grid;
+        width: 82px;
+        height: 82px;
+        place-items: center;
+        border: 1px solid rgba(255, 255, 255, .16);
+        border-radius: 24px;
+        color: white;
+        background: rgba(255, 255, 255, .10);
+        box-shadow: 0 20px 40px rgba(4, 25, 57, .22);
+        backdrop-filter: blur(14px);
+    }
+
+    .route-node svg {
+        width: 34px;
+        height: 34px;
+    }
+
+    .route-node.one {
+        top: 92px;
+        right: 34%;
+        transform: rotate(-5deg);
+    }
+
+    .route-node.two {
+        right: 12%;
+        bottom: 84px;
+        background: linear-gradient(145deg, rgba(91, 213, 184, .22), rgba(255, 255, 255, .09));
+        transform: rotate(5deg);
+    }
+
+    .home-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        margin: 22px 0 34px;
+        gap: 14px;
+    }
+
+    .stat-card {
+        display: grid;
+        min-height: 116px;
+        box-sizing: border-box;
+        padding: 20px;
+        border: 1px solid #e4eaf3;
+        border-radius: 18px;
+        background: rgba(255, 255, 255, .88);
+        box-shadow: 0 14px 36px rgba(40, 67, 112, .07);
+    }
+
+    .stat-card span {
+        color: #8492a6;
+        font-size: 10px;
+        font-weight: 800;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+    }
+
+    .stat-card strong {
+        align-self: end;
+        color: #1a2e50;
+        font-size: 34px;
+        letter-spacing: -1.5px;
+    }
+
+    .module-heading {
+        display: flex;
+        align-items: flex-end;
+        justify-content: space-between;
+        margin: 0 0 16px;
+    }
+
+    .module-heading h2 {
+        margin: 7px 0 0;
+        color: #142743;
+        font-size: 24px;
+        letter-spacing: -1px;
+    }
+
+    .module-grid {
+        display: grid;
+        grid-template-columns: repeat(4, minmax(0, 1fr));
+        gap: 14px;
+    }
+
+    .module-card {
+        min-height: 178px;
+        box-sizing: border-box;
+        padding: 20px;
+        border: 1px solid #e4eaf3;
+        border-radius: 18px;
+        color: #17304f;
+        background: white;
+        box-shadow: 0 14px 36px rgba(40, 67, 112, .06);
+        text-decoration: none;
+        transition: transform .22s ease, box-shadow .22s ease, border-color .22s ease;
+    }
+
+    .module-card:hover {
+        transform: translateY(-5px);
+        border-color: #bed0ef;
+        box-shadow: 0 20px 42px rgba(40, 67, 112, .12);
+    }
+
+    .module-icon {
+        display: grid;
+        width: 44px;
+        height: 44px;
+        margin-bottom: 34px;
+        place-items: center;
+        border-radius: 13px;
+        color: #366fd1;
+        background: #edf4ff;
+    }
+
+    .module-card:nth-child(2) .module-icon {
+        color: #188c78;
+        background: #eaf9f5;
+    }
+
+    .module-card:nth-child(3) .module-icon {
+        color: #9a6b24;
+        background: #fff6e7;
+    }
+
+    .module-card:nth-child(4) .module-icon {
+        color: #8a5bb2;
+        background: #f6effb;
+    }
+
+    .module-icon svg {
+        width: 22px;
+        height: 22px;
+    }
+
+    .module-card strong,
+    .module-card small {
+        display: block;
+    }
+
+    .module-card strong {
+        margin-bottom: 7px;
+        font-size: 15px;
+    }
+
+    .module-card small {
+        color: #8492a6;
+        font-size: 11px;
+        line-height: 1.5;
+    }
+
+    @media (max-width: 980px) {
+        .home-hero { grid-template-columns: 1fr; }
+        .home-visual { display: none; }
+        .home-grid,
+        .module-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+    }
+
+    @media (max-width: 520px) {
+        .home-wrap { width: calc(100% - 32px); padding-top: 28px; }
+        .home-hero { min-height: 360px; border-radius: 22px; }
+        .home-hero-copy { padding: 32px 24px; }
+        .home-hero h1 { font-size: 41px; letter-spacing: -2.2px; }
+        .home-hero-copy > p { font-size: 14px; }
+        .home-actions .btn { width: 100%; justify-content: center; }
+        .home-grid,
+        .module-grid { grid-template-columns: 1fr; }
+        .stat-card { min-height: 96px; }
+    }
+</style>
+
+<section class="home-wrap">
+    <div class="home-hero">
+        <div class="home-hero-copy">
+            <span class="home-kicker">Tableau de bord</span>
+            <h1>Le transport, <span>simplifié.</span></h1>
+            {% if request.user.role == 'chargeur' and not request.user.is_platform_admin %}
+                <p>Gérez vos expéditions et répondez aux offres reçues depuis un espace centralisé.</p>
+            {% elif request.user.is_platform_admin %}
+                <p>Administrez l’ensemble des expéditions, entreprises, véhicules et offres de la plateforme.</p>
+            {% else %}
+                <p>Gérez votre entreprise, votre flotte et vos offres depuis un espace centralisé.</p>
+            {% endif %}
+            <div class="home-actions">
+                {% if request.user.is_platform_admin or request.user.role == 'chargeur' %}
+                    <a class="btn primary" href="{% url 'expeditions:create' %}">Créer une expédition</a>
+                {% endif %}
+                <a class="btn ghost" href="{% url 'expeditions:liste' %}">Voir les expéditions</a>
+                <a class="btn ghost" href="{% url 'entreprises:profile' %}">Modifier mon profil</a>
+                <a class="btn delete" href="{% url 'entreprises:deactivate_account' %}">Supprimer mon compte</a>
+            </div>
+        </div>
+        <div class="home-visual" aria-hidden="true">
+            <div class="route-line"></div>
+            <div class="route-node one">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M3 17h11V7H8l-5 10Z"></path><path d="M14 10h4l3 4v3h-7"></path>
+                    <circle cx="7" cy="18" r="2"></circle><circle cx="18" cy="18" r="2"></circle>
+                </svg>
+            </div>
+            <div class="route-node two">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7">
+                    <path d="M12 21s7-5.2 7-12a7 7 0 1 0-14 0c0 6.8 7 12 7 12Z"></path>
+                    <circle cx="12" cy="9" r="2.5"></circle>
+                </svg>
+            </div>
+        </div>
+    </div>
+
+    <div class="home-grid" aria-label="Statistiques">
+        <article class="stat-card"><span>Expéditions</span><strong>{{ expeditions_count }}</strong></article>
+        <article class="stat-card"><span>Entreprises</span><strong>{{ entreprises_count }}</strong></article>
+        {% if request.user.is_platform_admin or request.user.role == 'gerant' %}
+            <article class="stat-card"><span>Véhicules</span><strong>{{ vehicules_count }}</strong></article>
+        {% endif %}
+        <article class="stat-card"><span>Offres</span><strong>{{ offres_count }}</strong></article>
+    </div>
+
+    <header class="module-heading">
+        <div><span class="eyebrow">Navigation rapide</span><h2>Vos espaces</h2></div>
+    </header>
+
+    <div class="module-grid">
+        <a class="module-card" href="{% url 'expeditions:liste' %}">
+            <span class="module-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17h11V7H8l-5 10Z"></path><path d="M14 10h4l3 4v3h-7"></path><circle cx="7" cy="18" r="2"></circle><circle cx="18" cy="18" r="2"></circle></svg>
+            </span>
+            <strong>Expéditions</strong><small>Suivre et organiser vos livraisons</small>
+        </a>
+        {% if request.user.is_platform_admin or request.user.role == 'gerant' %}
+            <a class="module-card" href="{% url 'entreprises:liste' %}">
+                <span class="module-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M4 21V5l8-3v19M12 8h8v13M8 7v1M8 12v1M8 17v1M16 12v1M16 16v1"></path></svg>
+                </span>
+                <strong>Entreprises</strong><small>Consulter votre entreprise</small>
+            </a>
+            <a class="module-card" href="{% url 'vehicules:liste' %}">
+                <span class="module-icon" aria-hidden="true">
+                    <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M3 17h18v-5l-3-5H7l-4 5v5Z"></path><circle cx="7" cy="17" r="2"></circle><circle cx="17" cy="17" r="2"></circle></svg>
+                </span>
+                <strong>Véhicules</strong><small>Gérer votre flotte de transport</small>
+            </a>
+        {% endif %}
+        <a class="module-card" href="{% url 'offres:liste' %}">
+            <span class="module-icon" aria-hidden="true">
+                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.8"><path d="M20 12v7H4V5h7"></path><path d="m13 11 7-7m-5 0h5v5"></path></svg>
+            </span>
+            <strong>Offres</strong><small>Comparer et proposer des prestations</small>
+        </a>
+    </div>
+</section>
+{% endblock %}

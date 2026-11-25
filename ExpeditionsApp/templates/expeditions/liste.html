@@ -5,7 +5,9 @@
 <section class="page-wrap">
     <header class="page-heading">
         <div><span class="eyebrow">{% t "eyebrow_workspace" %}</span><h1>{% t "shipments_title" %}</h1><p>{% t "shipments_intro" %}</p></div>
-        <div class="page-actions"><a class="btn primary" href="{% url 'expeditions:create' %}">+ {% t "create_shipment" %}</a></div>
+        {% if request.user.is_platform_admin or request.user.role == 'chargeur' %}
+            <div class="page-actions"><a class="btn primary" href="{% url 'expeditions:create' %}">+ {% t "create_shipment" %}</a></div>
+        {% endif %}
     </header>
     <ul class="items-list">
         {% for expedition in expeditions %}
@@ -16,7 +18,9 @@
             <small>{% t "requested_for" %} {{ expedition.date_souhaitee|date:"d/m/Y" }} · {% if expedition.description %}{{ expedition.description|truncatewords:15 }}{% else %}{% t "no_description" %}{% endif %}</small>
             <div class="actions">
                 <a class="btn details" href="{% url 'expeditions:detail' expedition.reference %}">{% t "view_details" %}</a>
-                <a class="btn delete" href="{% url 'expeditions:delete' expedition.reference %}">{% t "delete" %}</a>
+                {% if request.user.is_platform_admin or request.user.role == 'chargeur' %}
+                    <a class="btn delete" href="{% url 'expeditions:delete' expedition.reference %}">{% t "delete" %}</a>
+                {% endif %}
             </div>
         </li>
         {% empty %}

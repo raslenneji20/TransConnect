@@ -1,0 +1,32 @@
+{% extends "base.html" %}
+
+{% block title %}Supprimer mon compte | TransConnect{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">Sécurité du compte</span>
+            <h1>Supprimer mon compte</h1>
+            <p>Confirmez votre mot de passe pour supprimer votre accès.</p>
+        </div>
+    </header>
+
+    <div class="content-panel confirm-panel">
+        <p>Votre compte sera désactivé et vous serez déconnecté. L’entreprise, les expéditions, véhicules et offres associés resteront conservés.</p>
+        {% if deactivation_blocked %}
+            <p class="field-error" role="alert">Le dernier compte administrateur actif ne peut pas être supprimé.</p>
+            <a class="btn secondary" href="{% url 'entreprises:profile' %}">Retour au profil</a>
+        {% else %}
+            <form method="post">
+                {% csrf_token %}
+                {{ form.as_p }}
+                <div class="actions">
+                    <button class="btn delete" type="submit">Confirmer la suppression du compte</button>
+                    <a class="btn secondary" href="{% url 'entreprises:profile' %}">Annuler</a>
+                </div>
+            </form>
+        {% endif %}
+    </div>
+</section>
+{% endblock %}

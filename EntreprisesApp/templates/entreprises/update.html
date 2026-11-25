@@ -1,0 +1,25 @@
+{% extends "base.html" %}
+
+{% block title %}Modifier mon entreprise | TransConnect{% endblock %}
+
+{% block content %}
+<section class="page-wrap">
+    <header class="page-heading">
+        <div>
+            <span class="eyebrow">Mon entreprise</span>
+            <h1>Modifier les informations</h1>
+            <p>Le type et le responsable de l’entreprise ne peuvent pas être modifiés ici.</p>
+        </div>
+    </header>
+    <div class="content-panel form-panel">
+        <form method="post">
+            {% csrf_token %}
+            {{ form.as_p }}
+            <div class="actions">
+                <button class="btn primary" type="submit">Enregistrer</button>
+                <a class="btn secondary" href="{% url 'entreprises:detail_entreprise' object.pk %}">Annuler</a>
+            </div>
+        </form>
+    </div>
+</section>
+{% endblock %}

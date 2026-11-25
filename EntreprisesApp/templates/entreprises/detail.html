@@ -7,7 +7,10 @@
         <div><span class="eyebrow">{% t "eyebrow_details" %}</span><h1>{{ entreprise.raison_sociale }}</h1></div>
         <div class="page-actions">
             <a class="btn secondary" href="{% url 'entreprises:liste' %}">{% t "back_to_list" %}</a>
-            <a class="btn delete" href="{% url 'entreprises:delete' entreprise.pk %}">{% t "delete" %}</a>
+            <a class="btn secondary" href="{% url 'entreprises:update' entreprise.pk %}">Modifier</a>
+            {% if request.user.is_platform_admin %}
+                <a class="btn delete" href="{% url 'entreprises:delete' entreprise.pk %}">{% t "delete" %}</a>
+            {% endif %}
         </div>
     </header>
     <div class="content-panel">

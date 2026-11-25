@@ -10,9 +10,11 @@
             <h1>{% t "companies_title" %}</h1>
             <p>{% t "companies_intro" %}</p>
         </div>
-        <div class="page-actions">
-            <a class="btn primary" href="{% url 'entreprises:create' %}">+ {% t "create_company" %}</a>
-        </div>
+        {% if request.user.is_platform_admin %}
+            <div class="page-actions">
+                <a class="btn primary" href="{% url 'entreprises:create' %}">+ {% t "create_company" %}</a>
+            </div>
+        {% endif %}
     </header>
     <ul class="items-list">
         {% for entreprise in entreprises %}
@@ -22,7 +24,9 @@
             <p><strong>{% t "field_type_entreprise" %}:</strong> {{ entreprise.get_type_entreprise_display }}</p>
             <div class="actions">
                 <a class="btn details" href="{% url 'entreprises:detail_entreprise' entreprise.pk %}">{% t "view_details" %}</a>
-                <a class="btn delete" href="{% url 'entreprises:delete' entreprise.pk %}">{% t "delete" %}</a>
+                {% if request.user.is_platform_admin %}
+                    <a class="btn delete" href="{% url 'entreprises:delete' entreprise.pk %}">{% t "delete" %}</a>
+                {% endif %}
             </div>
         </li>
         {% empty %}

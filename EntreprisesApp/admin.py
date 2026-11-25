@@ -33,7 +33,10 @@ class UtilisateurAdmin(admin.ModelAdmin):
     search_fields = ('user_id', 'email', 'username', 'role')
     fieldsets = (
         ("Utilisateur", {
-            'fields': ("user_id", "username", "email", "role", "telephone")
+            'fields': (
+                "user_id", "username", "email", "role", "telephone",
+                "is_active", "is_staff", "is_superuser",
+            )
         }),
         ("Horodatage", {
             'fields': ("date_joined", "last_login", "created_at", "updated_at"),
